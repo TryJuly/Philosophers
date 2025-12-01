@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 13:53:10 by strieste          #+#    #+#             */
-/*   Updated: 2025/12/01 15:13:07 by strieste         ###   ########.fr       */
+/*   Updated: 2025/12/01 15:47:02 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 typedef struct s_philo
 {
-	pthread_t	**philo;
+	pthread_t	philo;
 	int			number;
 	int 		time_sleep;
 	int			time_die;
@@ -33,8 +33,9 @@ typedef struct s_philo
 	int			must_eat;
 	pthread_mutex_t	r_fork;
 	pthread_mutex_t	l_fork;
-	pthread_mutex_t	die;
 	pthread_mutex_t	write;
+	pthread_mutex_t	eat;
+	pthread_mutex_t	die;
 	
 }		t_philo;
 

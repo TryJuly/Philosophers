@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 13:53:56 by strieste          #+#    #+#             */
-/*   Updated: 2025/12/01 15:15:21 by strieste         ###   ########.fr       */
+/*   Updated: 2025/12/01 15:21:42 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	main(int ac, char **av)
 {
 	t_philo		philo;
 
-	pthread_create((&philo).philo, NULL, &routine, &philo);
+	pthread_create(&philo.philo, NULL, &routine, &philo);
 	(void)ac;
 	(void)av;
-	pthread_join(philo.philo[0], NULL);
+	pthread_join(philo.philo, NULL);
 	// ac--;
 	// if (ac > 5 || ac < 4)
 	// 	return (printf("Error invalide input\n"), 1);

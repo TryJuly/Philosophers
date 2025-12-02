@@ -6,26 +6,27 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 10:20:50 by strieste          #+#    #+#             */
-/*   Updated: 2025/12/01 12:53:53 by strieste         ###   ########.fr       */
+/*   Updated: 2025/12/02 08:20:30 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	set_clean(t_philo *philo)
+void	set_clean(t_data *philo)
 {
-	philo->philo = 0;
-	philo->number = 0;
+	philo->philosophe = 0;
+	philo->number_philo = 0;
+	philo->id = 1;
 	philo->time_sleep = 0;
 	philo->time_die = 0;
 	philo->time_eat = 0;
 	philo->must_eat = 0;
 }
 
-int	check_argument(int ac, char **av, t_philo *philo)
+int	check_argument(int ac, char **av, t_data *philo)
 {
-	philo->number = ft_atoi(av[1]);
-	if (philo->number < 1 || !philo->number)
+	philo->number_philo = ft_atoi(av[1]);
+	if (philo->number_philo < 1 || !philo->number_philo)
 		return (printf("Number of philo less than 1\n"), 1);
 	philo->time_die = ft_atoi(av[2]);
 	if (philo->time_die < 0 || !philo->time_die)

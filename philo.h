@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 13:53:10 by strieste          #+#    #+#             */
-/*   Updated: 2025/12/02 10:59:22 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/06 17:18:23 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,29 +27,49 @@
 # define LGREEN "\e[102m"
 # define BLUE "\e[34m"
 
+typedef struct	s_philo t_philo;
+
 typedef struct s_data
 {
-	pthread_t		*philosophe;
-	pthread_mutex_t	lock_philo;
-	int				number_philo;
-	int				id;
+	int				nb_philo;
 	int 			time_sleep;
 	int				time_die;
 	int				time_eat;
 	int				must_eat;
-	pthread_mutex_t	*r_fork;
-	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	write;
-	pthread_mutex_t	eat;
 	pthread_mutex_t	die;
+	t_philo			*philos;
 	
-}		t_data;
+}	t_data;
 
-/*		Init Struct			*/
+typedef struct	s_philo
+{
+	int				id;
+	int				l_fork;
+	int				r_fork;
+	long			last_meal;
+	int				nb_meal;
+	pthread_mutex_t	meal_mutex;
+	pthread_t		thread;
+	t_data			*data;
+}	t_philo;
 
-void	set_clean(t_data *philo);
+/*		Init Struct				*/
+
+int		check_input(int ac, char **av);
+void	init_philos_struct(t_data *data);
 int		check_arg_number(int ac, char **av);
-int		check_argument(int ac, char **av, t_data *philo);
+int		init_data(int ac, char **av, t_data *philo);
+
+/*		Error function			*/
+
+void	error_input(void);
+
+/*		Clean					*/
+
+void	free_data(t_data *data);
+void	destroy_mutex_loop(t_data *data, int numbers);
 
 int	ft_atoi(const char *str);
 

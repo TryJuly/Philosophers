@@ -6,7 +6,7 @@ NAME = philo
 CC = gcc
 FLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
 
-SRCS = main.c init_struct.c
+SRCS = main.c init_struct.c clean.c
 	
 
 SRCS_BONUS =

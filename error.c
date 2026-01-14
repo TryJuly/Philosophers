@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 12:12:34 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/06 12:18:14 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/13 10:46:59 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,24 @@
 
 void	error_input(void)
 {
-	printf("%sError argument programme%s\n", RED, NC);
-	printf("%sFirst%s: Numbers of philo, ", GREEN, NC);
-	printf("%sSeconde%s: Time to die, ", GREEN, NC);
-	printf("%sThrid%s: Time to eat, ", GREEN, NC);
-	printf("%sFourth%s: Time to sleep, ", GREEN, NC);
-	printf("%sFifth%s: Number of time must eat (Optional)\n", GREEN, NC);
+	printf("%sError input do like this:%s\n", RED, NC);
+	printf("%s1%s: Name of programme, ", GREEN, NC);
+	printf("%s2%s: Number of philo, ", GREEN, NC);
+	printf("%s3%s: Time to die, ", GREEN, NC);
+	printf("%s4%s: Time to eat, ", GREEN, NC);
+	printf("%s5%s: Time to sleep, ", GREEN, NC);
+	printf("%s6%s: %s(Optional)%s Number must eat\n", GREEN, NC, RED, NC);
+}
+
+void	p_error(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		write(2, &str[i], 1);
+		i++;
+	}
+	return ;
 }

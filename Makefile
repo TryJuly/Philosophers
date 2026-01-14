@@ -4,9 +4,10 @@
 NAME = philo
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
+FLAGS = -Wall -Wextra -Werror -g #-fsanitize=address #-fsanitize=thread
 
-SRCS = main.c init_struct.c clean.c
+SRCS = main.c init_struct.c clean.c utils.c error.c create_philo.c \
+	eating.c monitor.c routine.c
 	
 
 SRCS_BONUS =

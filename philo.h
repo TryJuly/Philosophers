@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 13:53:10 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/06 17:18:23 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/13 14:12:59 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define PHILO_H
 
 # include <stdio.h>
+# include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
-# include <stdlib.h>
+# include <sys/time.h>
 
 # define NC "\e[0m"
 # define YELLOW "\e[33m"
@@ -36,9 +37,15 @@ typedef struct s_data
 	int				time_die;
 	int				time_eat;
 	int				must_eat;
+	long			time;
+	int				error;
+	int				one_dead;
+	int				stop;
+	pthread_mutex_t	error_check;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	write;
 	pthread_mutex_t	die;
+	pthread_t		monitor;
 	t_philo			*philos;
 	
 }	t_data;
@@ -55,22 +62,39 @@ typedef struct	s_philo
 	t_data			*data;
 }	t_philo;
 
-/*		Init Struct				*/
+/*		Init Struct					*/
 
 int		check_input(int ac, char **av);
-void	init_philos_struct(t_data *data);
 int		check_arg_number(int ac, char **av);
 int		init_data(int ac, char **av, t_data *philo);
 
-/*		Error function			*/
+/*		Philo function				*/
+
+int		eat(t_philo *p);
+void	*routine(void *data);
+int		check_dead(t_data *p);
+int		join_philo(t_data *data);
+int		launch_philo(t_data *data);
+
+/*		Monitor						*/
+
+int		creat_monitor(t_data *data);
+
+/*		Error / Clean				*/
 
 void	error_input(void);
-
-/*		Clean					*/
-
+void	p_error(char *str);
 void	free_data(t_data *data);
+void	destroy_mutex_data(t_data *data);
+void	destroy_mutex_philo(t_data *data);
 void	destroy_mutex_loop(t_data *data, int numbers);
 
-int	ft_atoi(const char *str);
+/*		Utils						*/
+
+long	get_time(void);
+int		ft_isdigit(int c);
+int		ft_atoi(const char *str);
+int		check_arg_number(int ac, char **av);
+void    smart_sleep(long time_ms, t_data *data);
 
 #endif

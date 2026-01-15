@@ -6,93 +6,171 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 16:16:43 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/13 17:42:12 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:25:39 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	thinking(t_philo *p);
-static int	sleeping(t_philo *p);
-static int	check_must_eat(t_philo *p);
+static void	loop_routine(t_philo *p);
+static int	thinking(t_philo *p, int id, long start_time);
+static int	sleeping(t_philo *p, int id, long start_time);
 
 void	*routine(void *data)
 {
 	t_philo	*p;
 
 	p = data;
-	pthread_mutex_lock(&p->data->error_check);
-	if (p->data->error != 0)
-		return (pthread_mutex_unlock(&p->data->error_check), NULL);
-	pthread_mutex_unlock(&p->data->error_check);
-	pthread_mutex_lock(&p->meal_mutex);
-	p->last_meal = get_time();
-	pthread_mutex_unlock(&p->meal_mutex);
-	while (1)
-	{
-		if (p->data->must_eat != -1 && check_must_eat(p) == 1)
-				break ;
-		if (eat(p))
-			break ;
-		if (sleeping(p))
-			break ;
-		if (thinking(p))
-			break ;
-	}
+	if (before_start(p) == 1)
+		return (NULL);
+	if (p->data->nb_philo == 1)
+		return (ft_smart_sleep(p->data->time_die, p->data), NULL);
+	if (p->id % 2 != 0)
+		ft_smart_sleep(p->data->time_eat / 2, p->data);
+	loop_routine(p);
 	return (NULL);
 }
 
-static int	check_must_eat(t_philo *p)
+static void	loop_routine(t_philo *p)
 {
-	pthread_mutex_lock(&p->data->error_check);
-	if (p->data->stop == 1)
-		return (pthread_mutex_unlock(&p->data->error_check), 1);
-	pthread_mutex_unlock(&p->data->error_check);
-	return (0);
+	int		id;
+	int		must_eat;
+	int		eat_time;
+	long	start_time;
+
+	id = p->id + 1;
+	start_time = p->data->time;
+	must_eat = p->data->must_eat;
+	eat_time = p->data->time_eat;
+	while (1)
+	{
+		if ((must_eat != -1) && check_must_eat(p) == 1)
+			break ;
+		if (eat(p, id, start_time, eat_time))
+			break ;
+		if (sleeping(p, id, start_time))
+			break ;
+		if (thinking(p, id, start_time))
+			break ;
+	}
+	return ;
 }
 
-static int	thinking(t_philo *p)
+static int	sleeping(t_philo *p, int id, long start_time)
 {
 	pthread_mutex_lock(&p->data->write);
-	if (check_dead(p->data) == 0)
+	if (p->data->one_dead == 0)
 	{
-		printf("[%ld] %d is thinking\n", get_time() - p->data->time, p->id + 1);
+		printf("[%ld] %d: Is sleeping\n", get_time() - start_time, id);
 		pthread_mutex_unlock(&p->data->write);
-		smart_sleep(50, p->data);
+		ft_smart_sleep(p->data->time_sleep, p->data);
 	}
 	else
-	{
-		pthread_mutex_unlock(&p->data->write);
-		return (1);
-	}
+		return (pthread_mutex_unlock(&p->data->write), 1);
 	return (0);
 }
 
-static int	sleeping(t_philo *p)
+static int	thinking(t_philo *p, int id, long start_time)
 {
 	pthread_mutex_lock(&p->data->write);
-	if (check_dead(p->data) == 0)
+	if (p->data->one_dead == 0)
 	{
-		printf("[%ld] %d is sleeping\n", get_time() - p->data->time, p->id + 1);
+		printf("[%ld] %d: Is thinking\n", get_time() - start_time, id);
 		pthread_mutex_unlock(&p->data->write);
-		smart_sleep(p->data->time_sleep, p->data);
 	}
 	else
-	{
-		pthread_mutex_unlock(&p->data->write);
-		return (1);
-	}
+		return (pthread_mutex_unlock(&p->data->write), 1);
 	return (0);
 }
 
-int	check_dead(t_data *p)
-{
-	int states;
-	
-	pthread_mutex_lock(&p->die);
-	states = p->one_dead;
-	pthread_mutex_unlock(&p->die);
-		if (states != 0)
-			return (1);
-	return (0);
-}
+// static int	thinking(t_philo *p);
+// static int	sleeping(t_philo *p);
+// static int	check_must_eat(t_philo *p);
+// static int	before_start(t_philo *p);
+
+// void	*routine(void *data)
+// {
+// 	t_philo	*p;
+// 	int		must_eat;
+
+// 	p = data;
+// 	must_eat = p->data->must_eat;
+// 	if (before_start(p) == 1)
+// 		return (NULL);
+// 	if (p->data->nb_philo == 1)
+// 		return (ft_smart_sleep(p->data->time_eat + 1000, p->data), NULL);
+// 	while (1)
+// 	{
+// 		if (must_eat != -1 && check_must_eat(p) == 1)
+// 			break ;
+// 		if (eat(p) && must_eat != -1)
+// 			break ;
+// 		if (sleeping(p) && must_eat != -1)
+// 			break ;
+// 		if (thinking(p) && must_eat != -1)
+// 			break ;
+// 	}
+// 	return (NULL);
+// }
+
+// static int	before_start(t_philo *p)
+// {
+// 	pthread_mutex_lock(&p->data->error_check);
+// 	if (p->data->error != 0)
+// 		return (pthread_mutex_unlock(&p->data->error_check), 1);
+// 	pthread_mutex_unlock(&p->data->error_check);
+// 	pthread_mutex_lock(&p->meal_mutex);
+// 	p->last_meal = get_time();
+// 	pthread_mutex_unlock(&p->meal_mutex);
+// 	return (0);
+// }
+
+// static int	check_must_eat(t_philo *p)
+// {
+// 	pthread_mutex_lock(&p->data->error_check);
+// 	if (p->data->stop == 1)
+// 		return (pthread_mutex_unlock(&p->data->error_check), 1);
+// 	pthread_mutex_unlock(&p->data->error_check);
+// 	return (0);
+// }
+
+// static int	thinking(t_philo *p)
+// {
+// 	int		id;
+// 	long	time;
+
+// 	id = p->id + 1;
+// 	time = p->data->time;
+// 	pthread_mutex_lock(&p->data->write);
+// 	if (p->data->one_dead == 0)
+// 	{
+// 		printf("[%ld] %d: Is thinking\n", get_time() - time, id);
+// 		pthread_mutex_unlock(&p->data->write);
+// 		ft_smart_sleep(10, p->data);
+// 	}
+// 	else
+// 	{
+// 		pthread_mutex_unlock(&p->data->write);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+// static int	sleeping(t_philo *p)
+// {
+// 	int		id;
+// 	long	time;
+
+// 	id = p->id + 1;
+// 	time = p->data->time;
+// 	pthread_mutex_lock(&p->data->write);
+// 	if (p->data->one_dead == 0)
+// 	{
+// 		printf("[%ld] %d: Is sleeping\n", get_time() - time, id);
+// 		pthread_mutex_unlock(&p->data->write);
+// 		ft_smart_sleep(p->data->time_sleep, p->data);
+// 	}
+// 	else
+// 		return (pthread_mutex_unlock(&p->data->write), 1);
+// 	return (0);
+// }

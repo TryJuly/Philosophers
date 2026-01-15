@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 13:53:10 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/13 14:12:59 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:25:53 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
@@ -28,12 +29,12 @@
 # define LGREEN "\e[102m"
 # define BLUE "\e[34m"
 
-typedef struct	s_philo t_philo;
+typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {
 	int				nb_philo;
-	int 			time_sleep;
+	int				time_sleep;
 	int				time_die;
 	int				time_eat;
 	int				must_eat;
@@ -47,10 +48,9 @@ typedef struct s_data
 	pthread_mutex_t	die;
 	pthread_t		monitor;
 	t_philo			*philos;
-	
 }	t_data;
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	int				id;
 	int				l_fork;
@@ -64,15 +64,17 @@ typedef struct	s_philo
 
 /*		Init Struct					*/
 
-int		check_input(int ac, char **av);
 int		check_arg_number(int ac, char **av);
 int		init_data(int ac, char **av, t_data *philo);
 
 /*		Philo function				*/
 
-int		eat(t_philo *p);
+int		eat(t_philo *p, int id, long start_time, int eat_time);
 void	*routine(void *data);
-int		check_dead(t_data *p);
+// void	*routine_odd(void *data);
+int		before_start(t_philo *p);
+int		check_must_eat(t_philo *p);
+// int		check_dead(t_data *p);
 int		join_philo(t_data *data);
 int		launch_philo(t_data *data);
 
@@ -95,6 +97,6 @@ long	get_time(void);
 int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 int		check_arg_number(int ac, char **av);
-void    smart_sleep(long time_ms, t_data *data);
+void	ft_smart_sleep(long time_ms, t_data *data);
 
 #endif

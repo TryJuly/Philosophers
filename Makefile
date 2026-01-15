@@ -7,7 +7,7 @@ CC = gcc
 FLAGS = -Wall -Wextra -Werror -g #-fsanitize=address #-fsanitize=thread
 
 SRCS = main.c init_struct.c clean.c utils.c error.c create_philo.c \
-	eating.c monitor.c routine.c
+	eating.c monitor.c routine.c routine_utils.c
 	
 
 SRCS_BONUS =

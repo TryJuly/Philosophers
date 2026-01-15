@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 10:20:50 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/13 11:08:19 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/15 20:03:08 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static int	init_philo(t_philo *philos, int numbers, t_data *data);
 
 int	init_data(int ac, char **av, t_data *data)
 {
-	if (check_input(ac, av))
-		return (1);
 	if (taking_args(ac, av, data))
 		return (1);
 	data->forks = malloc(data->nb_philo * sizeof(pthread_mutex_t));
@@ -41,8 +39,8 @@ int	init_data(int ac, char **av, t_data *data)
 
 static int	init_mutex(t_data *data)
 {
-	int index;
-	
+	int	index;
+
 	index = 0;
 	while (index < data->nb_philo)
 	{
@@ -108,46 +106,20 @@ static int	taking_args(int ac, char **av, t_data *data)
 		return (p_error("Number of philo less than 1\n"), 1);
 	data->time_die = ft_atoi(av[2]);
 	if (data->time_die < 0 || !data->time_die)
-		return (p_error("Time die without eating less than 1\n"), 1);
+		return (p_error("Time die without eating less than 0\n"), 1);
 	data->time_eat = ft_atoi(av[3]);
 	if (data->time_eat < 0 || !data->time_eat)
 		return (p_error("Time for eat Invalid input\n"), 1);
 	data->time_sleep = ft_atoi(av[4]);
 	if (data->time_sleep < 0 || !data->time_sleep)
-		return (p_error("Time take to sleep less than 1\n"), 1);
+		return (p_error("Time take to sleep less than 0\n"), 1);
 	if (ac == 6)
 	{
 		data->must_eat = ft_atoi(av[5]);
 		if (data->must_eat < 0 || !data->must_eat)
-			return (p_error("Number of time need eat less than 1\n"), 1);
+			return (p_error("Number of time need eat less than 0\n"), 1);
 	}
 	else if (ac == 5)
 		data->must_eat = -1;
-	return (0);
-}
-
-int	check_input(int ac, char **av)
-{
-	int		len;
-	size_t	count;
-
-	len = 1;
-	while (len < ac)
-	{
-		count = 0;
-		if (av[len][count] == '+')
-			count++;
-		if (av[len][count] == '+')
-			return (p_error("No two '+'\n"), 1);
-		if (av[len][count] == '-')
-			return (p_error("No negative numbers\n"), 1);
-		while (av[len][count])
-		{
-			if (!ft_isdigit(av[len][count]))
-				return (p_error("Function take only digit\n"), 1);
-			count++;
-		}
-		len++;
-	}
 	return (0);
 }

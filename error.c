@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 12:12:34 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/13 10:46:59 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/14 12:45:22 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	error_input(void)
 {
 	printf("%sError input do like this:%s\n", RED, NC);
-	printf("%s1%s: Name of programme, ", GREEN, NC);
+	printf("%s1%s: Program name, ", GREEN, NC);
 	printf("%s2%s: Number of philo, ", GREEN, NC);
 	printf("%s3%s: Time to die, ", GREEN, NC);
 	printf("%s4%s: Time to eat, ", GREEN, NC);

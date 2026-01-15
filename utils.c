@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:51:03 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/13 16:53:36 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:25:49 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 long	get_time(void)
 {
 	struct timeval	tv;
-	
+
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
@@ -69,17 +69,4 @@ int	check_arg_number(int ac, char **av)
 		ac--;
 	}
 	return (0);
-}
-
-void    smart_sleep(long time_ms, t_data *p)
-{
-    long start;
-
-    start = get_time();
-    while (check_dead(p) == 0)
-    {
-        if (get_time() - start >= time_ms)
-            break;
-        usleep(10);
-    }
 }

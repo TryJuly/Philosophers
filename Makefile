@@ -8,9 +8,6 @@ FLAGS = -Wall -Wextra -Werror -g #-fsanitize=address #-fsanitize=thread
 
 SRCS = main.c init_struct.c clean.c utils.c error.c create_philo.c \
 	eating.c monitor.c routine.c routine_utils.c
-	
-
-SRCS_BONUS =
 
 INCLUDES = philo.h
 
@@ -35,7 +32,7 @@ clean:
 	rm -rf ${OBJ_DIR}/ ${OBJS}
 
 fclean: clean
-	rm -rf ${NAME} ${BONUS_NAME}
+	rm -rf ${NAME}
 
 re: fclean all
 #################################################################################################################
@@ -43,20 +40,3 @@ re: fclean all
 #################################################################################################################
 
 .PHONY: all clean fclean re
-
-#################################################################################################################
-#                                           BONUS	                                                            #
-#################################################################################################################
-BONUS_NAME =
-
-OBJS_BONUS = ${addprefix ${OBJ_DIR_BONUS}/,${SRCS_BONUS:.c=.o}}
-OBJ_DIR_BONUS = objets_bonus
-
-${OBJ_DIR_BONUS}/%.o: %.c ${INCLUDES}
-	@mkdir -p ${OBJ_DIR_BONUS}
-	${CC} ${FLAGS} -c $< -o $@
-
-${BONUS_NAME}: ${OBJS_BONUS}
-	${CC} ${FLAGS} ${OBJS_BONUS} ${LIB} ${EXTRA} -I ${INCLUDES} -o ${BONUS_NAME}
-
-bonus: ${MINILIBX_A} ${LIBFT_A} ${BONUS_NAME}

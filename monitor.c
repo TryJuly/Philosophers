@@ -6,7 +6,7 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 17:29:35 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/16 14:43:21 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/19 10:58:49 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	*monitor_routine(void *data)
 		check = 0;
 		if (loop_monitor(p, &check) == 1)
 			return (NULL);
-		if ((p->must_eat != -1) && check == p->nb_philo) // add p->must_eat
+		if ((p->must_eat != -1) && check == p->nb_philo)
 		{
 			pthread_mutex_lock(&p->error_check);
 			p->stop = 1;

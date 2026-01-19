@@ -6,20 +6,11 @@
 /*   By: strieste <strieste@student.42.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 14:21:12 by strieste          #+#    #+#             */
-/*   Updated: 2026/01/15 15:55:14 by strieste         ###   ########.fr       */
+/*   Updated: 2026/01/19 10:58:58 by strieste         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// int	check_dead(t_data *p)
-// {
-// 	pthread_mutex_lock(&p->die);
-// 	if (p->one_dead != 0)
-// 		return (pthread_mutex_unlock(&p->die), 1);
-// 	pthread_mutex_unlock(&p->die);
-// 	return (0);
-// }
 
 int	check_must_eat(t_philo *p)
 {
